@@ -1,0 +1,91 @@
+<!--DOCTYPE html-->
+<html>
+    <head>
+        <title>Star tracker website</title>
+        <meta charset="utf-8"/>
+        <link type="text/css" rel="stylesheet" href="style.css" />
+    <head/>
+    <body>
+        <div class="background">
+            <img class="bg-image" src="images/raspberry-pi-icon.png" alt="Raspberry pi" width=100%>
+        </div>
+        <div class="content">
+            <h1>Intervalomètre Webapp</h1>
+            <p>Bienvenue sur l'interface web de l'intervalomètre</p>
+            <p>Choisissez le temps de pause et le nombre de photo à prendre.</p>
+            <p id="tot_time">Temps total = </p>
+            <button onclick="total_time()">Temps total ?</button>
+            <form class="parameter_form" action="/index.html" method="post">
+                <h3>Paramèters</h3>
+                <div>
+                    <p>Temps de pose</p>
+                    <input class="temps_de_pose" type="text" id="temps_de_pose" name="temps_de_pose" value="1"/>
+                    <select class="unit" id="unit" name="unit" size=1>
+						<option value="s">Seconde</option>
+						<option value="m">Minutes</option>
+						<option value="h">Heure</option>
+					</select>
+                </div>
+                <div>
+                    <p>Nombre de photo</p>
+                    <input class="nb_photo" type="number" id="nb_photo" name="nb_photo" min="0" max="1000" value="5"/>
+                </div>
+                <div>
+                    <p>Temps d'enregistrement (en seconde)</p>
+                    <input class="t_enregistre" type="text" id="t_enregistre" name="t_enregistre" value="1.5"/>
+                </div>
+                <input class="submit" type="submit" value="Envoyer"/>
+            </form>
+            <div class="stop">
+                <form class="stop" action="/index.html" method="post">
+                    <input type="hidden" id="stop" name="stop" value="stop"/>
+                    <input class="stop" type="submit" value="Stop"/>
+                </form>
+            </div>
+            <div class="fin">
+                <form class="fin" action="/index.html" method="post">
+                    <input type="hidden" id="fin" name="fin" value="fin"/>
+                    <input class="fin" type="submit" value="! Arrêt !"/>
+                </form>
+            </div>
+        </div>
+        <script>
+            function total_time(){
+                var t_photo = Number(document.getElementById("temps_de_pose").value);
+                var unit = document.getElementById("unit").value;
+                var nb_photo = Number(document.getElementById("nb_photo").value);
+                var t_enr = Number(document.getElementById("t_enregistre").value);
+                
+                var total;
+                
+                if (unit === 's'){
+                    total = (t_photo + t_enr)*nb_photo;
+                }
+                else if (unit ==='m'){
+                    total = (t_photo*60 + t_enr)*nb_photo;
+                }
+                else{
+                    total = (t_photo*3600 + t_enr)*nb_photo;
+                }
+                
+                if (total >= 3600){
+                    var h_d = total / 3600.0;
+                    var h = Math.trunc(h_d);
+                    var m_d = (total - h*3600.0)/60.0;
+                    var m = Math.trunc(m_d);
+                    var s = Math.trunc((m_d-m)*60.0);
+                    document.getElementById("tot_time").innerHTML = "Temps total = " + h + "h " + m + "m " + s + "s";
+                }
+                else if (total >= 60){
+                    var m_d = total / 60.0;
+                    var m = Math.trunc(m_d);
+                    var s = Math.trunc((m_d-m)*60.0);
+                    document.getElementById("tot_time").innerHTML = "Temps total = " + m + "m " + s + "s";
+                }
+                else{
+                    document.getElementById("tot_time").innerHTML = "Temps total = " + total + " s";
+                }
+            }
+        </script>
+    </body>
+</html>

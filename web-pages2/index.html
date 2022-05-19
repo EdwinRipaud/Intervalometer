@@ -1,0 +1,337 @@
+<!--DOCTYPE html-->
+<html>
+    <head>
+        <title>Star tracker website</title>
+        <meta charset="utf-8"/>
+        <link type="text/css" rel="stylesheet" href="style.css" />
+    <head/>
+    
+    <script>
+        function openInfo(){
+            // function that rise-up the pop-up windows for the general informations
+            document.getElementById("info-popup").style.display = "block";
+            document.getElementById("blur-back").style.display = "block";
+            document.getElementById('main-container').setAttribute('class', 'blur');
+        }
+        function closeInfo(){
+            // function that close the pop-up windows for the general informations
+            document.getElementById("info-popup").style.display = "none";
+            document.getElementById("blur-back").style.display = "none";
+            document.getElementById('main-container').setAttribute('class', null);
+        }
+        
+        function decreaseNbPicture(){
+            // function to decrease the number of picture to take
+            var new_val = parseInt(document.getElementById("nb-picture").value)-1;
+            var min_val = parseInt(document.getElementById("nb-picture").min);
+            var max_val = parseInt(document.getElementById("nb-picture").max);
+            if (new_val > max_val){
+                document.getElementById("nb-picture").value = max_val;
+            }else if (new_val < min_val){
+                document.getElementById("nb-picture").value = min_val;
+            }
+            else{
+                document.getElementById("nb-picture").value = new_val;
+            }
+        }
+        function increaseNbPicture(){
+            // function to increase the number of picture to take
+            var new_val = parseInt(document.getElementById("nb-picture").value)+1;
+            var min_val = parseInt(document.getElementById("nb-picture").min);
+            var max_val = parseInt(document.getElementById("nb-picture").max);
+            if (new_val > max_val){
+                document.getElementById("nb-picture").value = max_val;
+            }else if (new_val < min_val){
+                document.getElementById("nb-picture").value = min_val;
+            }
+            else{
+                document.getElementById("nb-picture").value = new_val;
+            }
+        }
+        function decreaseExpTime(){
+            // function to decrease the exposure time
+            var new_val = parseFloat(document.getElementById("exp-time").value)-1.0;
+            var min_val = parseFloat(document.getElementById("exp-time").min);
+            var max_val = parseFloat(document.getElementById("exp-time").max);
+            if (new_val > max_val){
+                document.getElementById("exp-time").value = max_val;
+            }else if (new_val < min_val){
+                document.getElementById("exp-time").value = min_val;
+            }
+            else{
+                document.getElementById("exp-time").value = new_val;
+            }
+        }
+        function increaseExpTime(){
+            // function to increase the exposure time
+            var new_val = parseFloat(document.getElementById("exp-time").value)+1.0;
+            var min_val = parseFloat(document.getElementById("exp-time").min);
+            var max_val = parseFloat(document.getElementById("exp-time").max);
+            if (new_val > max_val){
+                document.getElementById("exp-time").value = max_val;
+            }else if (new_val < min_val){
+                document.getElementById("exp-time").value = min_val;
+            }
+            else{
+                document.getElementById("exp-time").value = new_val;
+            }
+        }
+        function decreaseCoolTime(){
+            // function to decrease the cooling time
+            var new_val = parseFloat(document.getElementById("cool-time").value)-1.0;
+            var min_val = parseFloat(document.getElementById("cool-time").min);
+            var max_val = parseFloat(document.getElementById("cool-time").max);
+            if (new_val > max_val){
+                document.getElementById("cool-time").value = max_val;
+            }else if (new_val < min_val){
+                document.getElementById("cool-time").value = min_val;
+            }
+            else{
+                document.getElementById("cool-time").value = new_val;
+            }
+        }
+        function increaseCoolTime(){
+            // function to increase the cooling time
+            var new_val = parseFloat(document.getElementById("cool-time").value)+1.0;
+            var min_val = parseFloat(document.getElementById("cool-time").min);
+            var max_val = parseFloat(document.getElementById("cool-time").max);
+            if (new_val > max_val){
+                document.getElementById("cool-time").value = max_val;
+            }else if (new_val < min_val){
+                document.getElementById("cool-time").value = min_val;
+            }
+            else{
+                document.getElementById("cool-time").value = new_val;
+            }
+        }
+        
+        function openSimu(){
+            // function to open the pop-up window and calculate the simulation part
+            document.getElementById("simulation-popup").style.display = "block";
+            document.getElementById("blur-back").style.display = "block";
+            document.getElementById('main-container').setAttribute('class', 'blur');
+            document.getElementById("info-button").style.display = "none";
+            
+            simulation();
+        }
+        
+        function simulation(){
+            var nb_picture = Number(document.getElementById("nb-picture").value);
+            var exp_time = Number(document.getElementById("exp-time").value);
+            var cool_time = Number(document.getElementById("cool-time").value);
+            
+            var ratio = exp_time/(exp_time+cool_time);
+            var middle_line = 75+700.0*ratio;
+            
+            var exp_txt = 75+(middle_line-75)/2;
+            var cool_txt = middle_line+(775-middle_line)/2;
+            
+            var paramMiddleLineV = "M "+middle_line+" 90 l 0 60";
+            var paramMiddleLineL = "M 75 120 l "+(middle_line-75)+" 0";
+            var paramMiddleLineR = "M "+middle_line+" 120 l "+(775-middle_line)+" 0";
+            
+            document.getElementById("moving-line-v").setAttribute("d", paramMiddleLineV);
+            document.getElementById("moving-line-l").setAttribute("d", paramMiddleLineL);
+            document.getElementById("moving-line-r").setAttribute("d", paramMiddleLineR);
+            document.getElementById("exp-text").setAttribute("x", exp_txt);
+            document.getElementById("cool-text").setAttribute("x", cool_txt);
+            
+            document.getElementById("simu-nb-picture").innerHTML = nb_picture;
+            document.getElementById("simu-exp-time").innerHTML = exp_time+ " s";
+            document.getElementById("simu-cool-time").innerHTML = cool_time+ " s";
+            
+            document.getElementById("simu-total-time").innerHTML = total_time(nb_picture, exp_time, cool_time);
+            document.getElementById("simu-total-exp-time").innerHTML = total_exposure(nb_picture, exp_time);
+        }
+        
+        function total_time(nb_picture, exp_time, cool_time){
+            // function to convert the parameters of the sequence into a ..h ..m ..s format
+            var total = Math.round((exp_time+cool_time)*nb_picture);
+            
+            if (total >= 3600){
+                var h_d = total / 3600.0;
+                var h = Math.trunc(h_d);
+                var m_d = (total - h*3600.0)/60.0;
+                var m = Math.trunc(m_d);
+                var s = Math.round((m_d-m)*60.0);
+                return h + "h " + m + "m " + s + "s";
+            }
+            else if (total >= 60){
+                var m_d = total / 60.0;
+                var m = Math.trunc(m_d);
+                var s = Math.round((m_d-m)*60.0);
+                return m + "m " + s + "s";
+            }
+            else{
+                return total + " s";
+            }
+        }
+        
+        function total_exposure(nb_picture, exp_time){
+            // function to convert the parameters of the sequence into a ..h ..m ..s format
+            var total = Math.round(exp_time*nb_picture);
+            
+            if (total >= 3600){
+                var h_d = total / 3600.0;
+                var h = Math.trunc(h_d);
+                var m_d = (total - h*3600.0)/60.0;
+                var m = Math.trunc(m_d);
+                var s = Math.round((m_d-m)*60.0);
+                return total + "s (" +h + "h " + m + "m " + s + "s)";
+            }
+            else if (total >= 60){
+                var m_d = total / 60.0;
+                var m = Math.trunc(m_d);
+                var s = Math.round((m_d-m)*60.0);
+                return total + "s (" + m + "m " + s + "s)";
+            }
+            else{
+                return total + " s";
+            }
+        }
+        
+        function closeSimu(){
+            // function to close the simulation pop-up window
+            document.getElementById("simulation-popup").style.display = "none";
+            document.getElementById("blur-back").style.display = "none";
+            document.getElementById('main-container').setAttribute('class', null);
+            document.getElementById("info-button").style.display = "block";
+        }
+        
+        function openWarning(){
+            // function to open the warning pop-up window to shutdown
+            document.getElementById("shutdown-popup").style.display = "block";
+            document.getElementById("blur-back").style.display = "block";
+            document.getElementById('main-container').setAttribute('class', 'blur');
+            document.getElementById("info-button").style.display = "none";
+        }
+        function closeWarning(){
+            // function to close the warning pop-up window to shutdown
+            document.getElementById("shutdown-popup").style.display = "none";
+            document.getElementById("blur-back").style.display = "none";
+            document.getElementById('main-container').setAttribute('class', null);
+            document.getElementById("info-button").style.display = "block";
+        }
+    </script>
+    
+    <body>
+        <div class="main" id="main">
+            
+            <!-- Main container definition -->
+            <div id="main-container">
+                <!-- WebApp title -->
+                <div class="top_band">
+                    <h1 class="major_title">Intervalometer</h1>
+                </div>
+                
+                <!-- Short info -->
+                <div class="little_info">
+                    <h3>This WebApp allows you to quickly set <br/> the parameters for your Astrophotography night.</h3>
+                </div>
+                
+                <!-- Parameters bloque description -->
+                <div class="parameters">
+                    <form class="parameter_form" action="/index.html" method="post">
+                        <!-- Number of picture -->
+                        <h2 class="param">Number of picture</h2>
+                        <div class="form_selector">
+                            <button type="button" class="form_btn" id="dec-nb-picture" onclick="decreaseNbPicture()">–</button>
+                            <input class="nb_picture" type="number" id="nb-picture" name="nb_picture" min="1" max="1000" value="50"/>
+                            <button type="button" class="form_btn" id="inc-nb-picture" onclick="increaseNbPicture()">+</button>
+                        </div>
+                        <!-- Exposure time -->
+                        <h2 class="param">Exposure time (s)</h2>
+                        <div class="form_selector">
+                            <button type="button" class="form_btn" id="dec-exp-time" onclick="decreaseExpTime()">–</button>
+                            <input class="exposure_time" type="text" id="exp-time" name="exposure_time" min="1" max="3600" value="20"/>
+                            <button type="button" class="form_btn" id="inc-exp-time" onclick="increaseExpTime()">+</button>
+                        </div>
+                        <!-- Cooling time -->
+                        <h2 class="param">Cooling time (s)</h2>
+                        <div class="form_selector">
+                            <button type="button" class="form_btn" id="dec-cool-time" onclick="decreaseCoolTime()">–</button>
+                            <input class="cooling_time" type="text" id="cool-time" name="cooling_time" min="0.1" max="1800" value="5"/>
+                            <button type="button" class="form_btn" id="inc-cool-time" onclick="increaseCoolTime()">+</button>
+                        </div>
+                        <!-- Simulation and submit button -->
+                        <div class="sequence">
+                            <input class="submit_param" type="submit" value="Run&#13;&#10;Sequence"/>
+                            <button type="button" class="simu_button" onclick="openSimu()">Simulation</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Shutdown button -->
+                <button type="button" class="shutdown_button" onclick="openWarning()">Shutdown</button>
+            </div>
+            
+            <!-- Information pup-up description -->
+            <div class="big_info" id="info-popup">
+                <h2>Detail informations</h2>
+                <p class="info_text">Big info on the WebApp utilisation<br/>You can test the connection between your device and the Intervalometer and between your camera and the Intervalometer too, by clicking on the "Test" button. During this test, the camera should have taken 3 picture with an exposure time of 1s and an interval between each frame of 2s. If no picture or only one picture have been taken, please check the cable connection between your canera an the Intervalometer.</p>
+                <form class="test_form" action="/index.html" method="post">
+                    <input class="nb_picture" type="number" id="nb-picture" name="nb_picture" value="3" hidden/>
+                    <input class="exposure_time" type="number" id="exp-time" name="exposure_time" value="1" hidden/>
+                    <input class="cooling_time" type="text" id="cool-time" name="cooling_time" value="2" hidden/>
+                    <input class="test_button" type="submit" value="Test"/>
+                </form>
+                <button type="button" class="close_button" onclick="closeInfo()">Close</button>
+            </div>
+            <div class="blur_back" id="blur-back"></div>
+            <button type="button" class="info_button" id="info-button" onclick="openInfo()">?</button>
+            
+            <!-- Simulation pop-up definition -->
+            <div class="simulation_popup" id="simulation-popup">
+                <h2>Sequence simulation</h2>
+                <h3 class="simu_text" >The sequence is composed of:</h3>
+                <h3 class="simu_param_text">- Number of picutre:</h3>
+                <h3 class="simu_param" id="simu-nb-picture">50 frame</h3><br/>
+                <h3 class="simu_param_text">- Exposure time:</h3>
+                <h3 class="simu_param" id="simu-exp-time">20 s</h3><br/>
+                <h3 class="simu_param_text">- Cooling time:</h3>
+                <h3 class="simu_param" id="simu-cool-time">5 s</h3><br/>
+                
+                <svg class="svg_drawing" height="250" width="850">
+                    <path id="moving-line-l" d="M 75 120 l 325 0" stroke=#e83b2e stroke-width="10" stroke-linecap="round"/> <!-- Moving horizontal line -->
+                    <path id="moving-line-r" d="M 400 120 l 375 0" stroke=#6ec23a stroke-width="10" stroke-linecap="round"/> <!-- Moving horizontal line -->
+                    <path id="moving-line-v" d="M 400 90 l 0 60" stroke=#5ECEDD stroke-width="10" stroke-linecap="round"/> <!-- Moving vertical line -->
+                    <path id="left-line" d="M 75 90 l 0 60" stroke="black" stroke-width="10" stroke-linecap="round"/> <!-- Left vertical line -->
+                    <path id="right-line" d="M 775 90 l 0 60" stroke="black" stroke-width="10" stroke-linecap="round"/> <!-- Right vertical line -->
+                    <!-- Extremum label -->
+                    <g font-family="Verdana" font-size="50" font-weight="bold" fill=#C4CDFF text-anchor="middle">
+                    <text id="start-text" x="75" y="120" dx="0" dy="-60">Start</text> <!-- Start label -->
+                    <text id="end-text" x="775" y="120" dx="0" dy="-60">End</text> <!-- End label -->
+                    </g>
+                    <!-- Exposure label -->
+                    <g font-family="Verdana" font-size="40" font-weight="bold" fill=#e83b2e text-anchor="middle">
+                    <text id="exp-text" x="238" y="120" dx="0" dy="90">Exposure time</text>
+                    </g>
+                    <!-- Cooling label -->
+                    <g font-family="Verdana" font-size="40" font-weight="bold" fill=#6ec23a text-anchor="middle">
+                    <text id="cool-text" x="588" y="120" dx="0" dy="90">Cooling time</text>
+                    </g>
+                    Sorry, your browser does not support inline SVG.
+                </svg>
+                
+                <div class="simu_total_time">
+                    <h2>Total sequence time:</h2>
+                    <h2 id="simu-total-time">20m 50s</h2>
+                    <h2>Total exposure time:</h2>
+                    <h2 id="simu-total-exp-time">1000s (16m 40s)</h2>
+                </div>
+                <button type="button" class="close_simu_button" onclick="closeSimu()">Close</button>
+            </div>
+            
+            <!-- Shutdown warning pop-up definition -->
+            <div class="shutdown_popup" id="shutdown-popup">
+                <h1>!!! Warning !!!</h1>
+                <p class="shutdown_txt">Do you really want to shutdown the intervalometer?</p>
+                <form class="shutdown_form" action="/index.html" method="post">
+                    <input type="number" id="exp-time" name="shutdown" value="shutdown" hidden/>
+                    <input class="submit_shutdown" type="submit" value="Shutdown"/>
+                </form>
+                <button type="button" class="cancel_button" onclick="closeWarning()">Cancel</button>
+            </div>
+        </div>
+        
+    </body>
+</html>

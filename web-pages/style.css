@@ -1,0 +1,141 @@
+body{
+    background-color: #FFFFFF;
+}
+
+div.background{
+    overflow: hidden;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: absolute;
+    opacity: 0.075;
+}
+
+div.content{
+    position: absolute;
+    transform: translate(-50%, 0);
+    width: 100%;
+    top: 2%;
+    left : 50%;
+    opacity: 1;
+}
+
+h1{
+    text-align: center;
+    font-size: 400%;
+    font-weight: 1000;
+}
+
+h3{
+    text-align: center;
+    font-size: 250%;
+    font-weight: 1000;
+}
+
+p{
+    text-align: center;
+    font-size: 200%;
+    font-weight: 100;
+    color: green;
+}
+
+button{
+    text-align: center;
+    padding: 15px 32px;
+    transform: translate(-50%, 0);
+    position: absolute;
+    left: 50%;
+    font-size: 150%;
+    font-weight: 500;
+}
+
+form{
+    transform: translate(-50%, 0);
+    position: relative;
+    left: 50%;
+    top: 100px;
+}
+
+input.temps_de_pose{
+    text-align: center;
+    transform: translate(-100%, 0);
+    position: relative;
+    left: 49%;
+    width: 150px;
+    font-size: 150%;
+}
+
+select.unit{
+    text-align: center;
+    transform: translate(-100%, 0);
+    position: relative;
+    left: 51%;
+    font-size: 150%;
+    font-weight: 400;
+}
+
+input.nb_photo{
+    text-align: center;
+    transform: translate(-50%, 0);
+    position: relative;
+    left: 49%;
+    width: 100px;
+    font-size: 150%;
+    font-weight: 400;
+}
+
+input.t_enregistre{
+    text-align: center;
+    transform: translate(-50%, 0);
+    position: relative;
+    left: 50%;
+    width: 100px;
+    font-size: 150%;
+    font-weight: 400;
+}
+
+
+input.submit{
+    text-align: center;
+    transform: translate(-50%, 0);
+    position: relative;
+    left: 50%;
+    top: 50px;
+    font-size: 250%;
+    font-weight: 700;
+}
+
+
+div.stop{
+    position: relative;
+    left: 45%;
+    top: 100px;
+    width: 350px;
+}
+
+
+input.stop{
+    transform: translate(-100%, 0);
+    width: 350px;
+    text-align: center;
+    color: red;
+    font-size: 350%;
+    font-weight: 900;
+}
+
+
+div.fin{
+    position: relative;
+    left: 55%;
+    top: -22px;
+    width: 350px;
+}
+
+
+input.fin{
+    width: 350px;
+    text-align: center;
+    color: red;
+    font-size: 350%;
+    font-weight: 900;
+}
