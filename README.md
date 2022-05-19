@@ -26,7 +26,5 @@ You are ready to use the Intervalometer!
 * The problem may be due to the compilation of the source code.
 You must recompile the ***'server.cpp'*** code from a terminal by typing: ``g++ -Wall server.cpp -o server.exe -lwiringPi``.
 If the compiler outputs an error... it's complicated 🫤
-*It can also be a connection problem between the smartphone and the Raspberry Pi. You can check this by running from a terminal: ``./server.exe``. This should run the compiled code from that terminal, giving you access to the code output. When you try to load the web-app page, you should see a new output that indicates that someone is connected to the web-app. If not, you will simply see "Listening on port 55000 ...``.
-
-Translated with www.DeepL.com/Translator (free version)
+* It can also be a connection problem between the smartphone and the Raspberry Pi. You can check this by running from a terminal: ``./server.exe``. This should run the compiled code from that terminal, giving you access to the code output. When you try to load the web-app page, you should see a new output that indicates that someone is connected to the web-app. If not, you will simply see "Listening on port 55000 ...``.
 
